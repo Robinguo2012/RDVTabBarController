@@ -28,6 +28,8 @@
     UIOffset _imagePositionAdjustment;
     NSDictionary *_unselectedTitleAttributes;
     NSDictionary *_selectedTitleAttributes;
+    NSString *_tempTitle;
+    BOOL _isSelected;
 }
 
 @property UIImage *unselectedBackgroundImage;
@@ -57,6 +59,20 @@
 
 - (id)init {
     return [self initWithFrame:CGRectZero];
+}
+
+- (void)setSelected:(BOOL)selected {
+    _isSelected = selected;
+    if (selected) {
+        _title = @"";
+    } else {
+        _title = _tempTitle;
+    }
+    [self setNeedsDisplay];
+}
+
+- (BOOL)isSelected {
+    return _isSelected;
 }
 
 - (void)commonInitialization {
@@ -105,6 +121,7 @@
         if (!titleAttributes) {
             titleAttributes = [self unselectedTitleAttributes];
         }
+        
     } else {
         image = [self unselectedImage];
         backgroundImage = [self unselectedBackgroundImage];
@@ -216,6 +233,7 @@
     CGContextRestoreGState(context);
 }
 
+    
 #pragma mark - Image configuration
 
 - (UIImage *)finishedSelectedImage {
@@ -262,6 +280,11 @@
     }
 }
 
+- (void)setTitle:(NSString *)title {
+    _tempTitle = title;
+    _title = title;
+}
+    
 #pragma mark - Accessibility
 
 - (NSString *)accessibilityLabel{
