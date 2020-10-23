@@ -128,7 +128,11 @@
         titleAttributes = [self unselectedTitleAttributes];
     }
     
-    imageSize = [image size];
+    if ([self isSelected]) {
+        imageSize = CGSizeMake(image.size.width * 1.6, image.size.height * 1.6);
+    } else {
+        imageSize = [image size];
+    }
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSaveGState(context);
